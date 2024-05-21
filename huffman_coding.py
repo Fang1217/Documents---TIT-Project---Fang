@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import math
 
 class Node:
     def __init__(self, symbol, probability, left=None, right=None):
@@ -61,20 +60,22 @@ def huffman_coding(text):
     }
     df = pd.DataFrame(data)
     df['Codeword'] = [codes[letter] for letter in unique_letters]
-    df['Probability'] = [round(probability, 2) for probability in probabilities]
+    df['Probability'] = [round(probability, 4) for probability in probabilities]
     df['Length'] = [len(codes[letter]) for letter in unique_letters]
 
     return df
 
 def calculate_efficiency(dataframe):
     df = pd.DataFrame(dataframe)
-    l_bar = sum(df['Length']*df['Probability'])
+    if df.empty:
+        return 0
+    l_bar = sum(df['Length'] * df['Probability'])
     print("Average code length: " + str(l_bar))
 
-    entropy = sum(df['Probability']*np.log2(1/df['Probability']))
+    entropy = sum(df['Probability'] * np.log2(1/df['Probability']))
     print("Entropy: " + str(entropy))
 
-    efficiency = round(entropy/l_bar*100, 2)
+    efficiency = round(entropy/l_bar*100, 4)
     print("Efficiency: " + str(efficiency) + " %")
 
     return efficiency

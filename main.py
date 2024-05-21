@@ -1,3 +1,4 @@
+import huffman_coding
 # GUI Library
 import tkinter as tk
 from tkinter import ttk
@@ -5,14 +6,20 @@ from tkinter import ttk
 # Modernized tkinter library
 import customtkinter as ctk
 
-import huffman_coding
+
+TEXT = "CRYPTSKY"
+
 # Function when submit button is pressed
 def button_action():
     if not len(input_name.get()) == 0:
-        table_title.configure(text="Encoding Table for text " + input_name.get())
-        df = huffman_coding.huffman_coding(input_name.get())
+        name = input_name.get().upper()
+        first_two_consonants = get_first_two_consonants(name)
+        print(first_two_consonants)
+        input = TEXT + first_two_consonants
+        table_title.configure(text="Encoding Table for text \"" + input + "\":")
+        df = huffman_coding.huffman_coding(input)
         calculation.configure(text="Efficiency: " + str(huffman_coding.calculate_efficiency(df)) + "%")
-        populate_tree(tree, df)
+        populate_tree(tree, df) 
 
 # App frame
 app = ctk.CTk()
@@ -26,9 +33,9 @@ ctk.set_default_color_theme("dark-blue")
 # App Grid Layout
 app.columnconfigure(0, weight=1, uniform='a')
 app.columnconfigure(1, weight=2, uniform='a')
-app.rowconfigure((0,1,2,3,4,5,6,7), weight=1, uniform='a')
+app.rowconfigure((0,1,2,3,4,5,6), weight=1, uniform='a')
 
-# Content
+# Contents
 title = ctk.CTkLabel(app, text="Input name: ")
 title.grid(row=0, column=0, padx=40, sticky="w")
 
@@ -45,6 +52,8 @@ table_title.grid(row=2, column=0, columnspan=2, padx=40, sticky='w')
 calculation = ctk.CTkLabel(app, text="")
 calculation.grid(row=6, column=0, columnspan=2, padx=40, sticky='w')
 
+tree = ttk.Treeview(app, show='headings')
+tree.grid(row=3, column=0, rowspan=3, columnspan=3, padx=100, sticky="NSEW")
 
 # Populate Treeview with DataFrame data
 def populate_tree(tree, dataframe):
@@ -61,9 +70,19 @@ def populate_tree(tree, dataframe):
     for i, row in dataframe.iterrows():
         tree.insert('', 'end', values=list(row))
 
-# Create a Treeview widget
-tree = ttk.Treeview(app, show='headings')
-tree.grid(row=3, column=0, rowspan=3, columnspan=3, padx=100, sticky="NSEW")
+# Function to get first two consonants from a string
+def get_first_two_consonants(string):
+    consonants = ""
+    count = 0
+    for char in string:
+        if char.isalpha() and char.lower() not in "aeiou":
+            consonants += char
+            count += 1
+        if count == 2:
+            break
+    return consonants
+
+
 
 # Treeview Modern dark look, taken from https://github.com/TomSchimansky/CustomTkinter/discussions/431
 style = ttk.Style()
