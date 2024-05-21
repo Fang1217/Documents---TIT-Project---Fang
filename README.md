@@ -7,7 +7,7 @@ The Huffman Encoder is a Python program designed to compress and decompress data
 ## Features
 
 - Generate Huffman encoding table using keyword "CRYPT", "SKY" and first two consonants of input name using Huffman coding.
-- Easy to use with simple command-line interface
+- Easy to use Graphical User Interface (GUI).
 
 ## Requirements
 - Python 3.x
@@ -38,9 +38,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-### Command Line Interface
-
-1. **Using the Graphical User Interface**
+### Using the Graphical User Interface
 
    ```bash
    python main.py
